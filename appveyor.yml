@@ -4,7 +4,7 @@ branches:
   - master
 image: Visual Studio 2019
 environment:
-  appveyor_dotnet_runtime: net5.0
+  appveyor_dotnet_runtime: net6.0
   matrix:
     - config: Release
       config_name: '-'
