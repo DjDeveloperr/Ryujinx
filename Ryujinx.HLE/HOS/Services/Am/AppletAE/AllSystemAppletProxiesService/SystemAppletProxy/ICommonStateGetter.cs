@@ -22,12 +22,15 @@ namespace Ryujinx.HLE.HOS.Services.Am.AppletAE.AllSystemAppletProxiesService.Sys
 #pragma warning restore CS0414
         private int  _messageEventHandle;
         private int  _displayResolutionChangedEventHandle;
+        private int _acquiredSleepLockEventHandle;
+        private KEvent _sleepLockEvent;
 
         public ICommonStateGetter(ServiceCtx context)
         {
             _apmManagerServer       = new Apm.ManagerServer(context);
             _apmSystemManagerServer = new Apm.SystemManagerServer(context);
             _lblControllerServer    = new Lbl.LblControllerServer(context);
+            _sleepLockEvent = new KEvent(context.Device.System.KernelContext);
         }
 
         [CommandHipc(0)]
@@ -114,6 +117,42 @@ namespace Ryujinx.HLE.HOS.Services.Am.AppletAE.AllSystemAppletProxiesService.Sys
         {
             context.ResponseData.Write((byte)context.Device.System.AppletState.FocusState);
 
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(10)]
+        public ResultCode RequestToAcquireSleepLock(ServiceCtx context)
+        {
+            if (context.Process.HandleTable.GenerateHandle(_sleepLockEvent.ReadableEvent, out _acquiredSleepLockEventHandle) != KernelResult.Success)
+            {
+                throw new InvalidOperationException("Out of handles!");
+            }
+            Logger.Stub?.PrintStub(LogClass.ServiceAm);
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(13)]
+        public ResultCode GetAcquiredSleepLockEvent(ServiceCtx context)
+        {
+            if (_acquiredSleepLockEventHandle == 0)
+            {
+                return ResultCode.NotAvailable;
+            }
+
+            context.Response.HandleDesc = IpcHandleDesc.MakeCopy(_acquiredSleepLockEventHandle);
+            _sleepLockEvent.WritableEvent.Signal();
+            Logger.Stub?.PrintStub(LogClass.ServiceAm);
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(20)]
+        public ResultCode PushToGeneralChannel(ServiceCtx context)
+        {
+            MakeObject(context, new AppletAE.IStorage(new byte[] {
+                0x53, 0x41, 0x4d, 0x53, 0x01, 0x00, 0x00, 0x00,
+                0x03, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
+            }));
+            Logger.Stub?.PrintStub(LogClass.ServiceAm);
             return ResultCode.Success;
         }
 

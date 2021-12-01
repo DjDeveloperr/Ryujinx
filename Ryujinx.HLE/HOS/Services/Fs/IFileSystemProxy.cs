@@ -28,7 +28,7 @@ namespace Ryujinx.HLE.HOS.Services.Fs
 
         public IFileSystemProxy(ServiceCtx context)
         {
-            var applicationClient = context.Device.System.LibHacHorizonManager.ApplicationClient;
+            var applicationClient = context.Device.System.LibHacHorizonManager.RyujinxClient;
             _baseFileSystemProxy = applicationClient.Fs.Impl.GetFileSystemProxyServiceObject();
         }
 

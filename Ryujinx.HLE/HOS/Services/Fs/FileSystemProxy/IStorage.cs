@@ -33,7 +33,6 @@ namespace Ryujinx.HLE.HOS.Services.Fs.FileSystemProxy
                 byte[] data = new byte[size];
 
                 Result result = _baseStorage.Target.Read((long)offset, new OutBuffer(data), (long)size);
-
                 context.Memory.Write(buffDesc.Position, data);
 
                 return (ResultCode)result.Value;
@@ -47,7 +46,6 @@ namespace Ryujinx.HLE.HOS.Services.Fs.FileSystemProxy
         public ResultCode GetSize(ServiceCtx context)
         {
             Result result = _baseStorage.Target.GetSize(out long size);
-
             context.ResponseData.Write(size);
 
             return (ResultCode)result.Value;

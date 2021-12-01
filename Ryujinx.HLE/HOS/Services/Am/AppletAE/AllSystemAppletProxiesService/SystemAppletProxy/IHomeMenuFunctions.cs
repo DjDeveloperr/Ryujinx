@@ -3,6 +3,7 @@ using Ryujinx.HLE.HOS.Ipc;
 using Ryujinx.HLE.HOS.Kernel.Common;
 using Ryujinx.HLE.HOS.Kernel.Threading;
 using System;
+using System.Threading;
 
 namespace Ryujinx.HLE.HOS.Services.Am.AppletAE.AllSystemAppletProxiesService.SystemAppletProxy
 {
@@ -22,7 +23,13 @@ namespace Ryujinx.HLE.HOS.Services.Am.AppletAE.AllSystemAppletProxiesService.Sys
         public ResultCode RequestToGetForeground(ServiceCtx context)
         {
             Logger.Stub?.PrintStub(LogClass.ServiceAm);
+            return ResultCode.Success;
+        }
 
+        [CommandHipc(20)]
+        public ResultCode PopFromGeneralChannel(ServiceCtx context)
+        {
+            Logger.Stub?.PrintStub(LogClass.ServiceAm);
             return ResultCode.Success;
         }
 
@@ -39,9 +46,8 @@ namespace Ryujinx.HLE.HOS.Services.Am.AppletAE.AllSystemAppletProxiesService.Sys
             }
 
             context.Response.HandleDesc = IpcHandleDesc.MakeCopy(_channelEventHandle);
-
+            _channelEvent.WritableEvent.Signal();
             Logger.Stub?.PrintStub(LogClass.ServiceAm);
-
             return ResultCode.Success;
         }
     }

@@ -1,3 +1,5 @@
+using Ryujinx.Common.Logging;
+
 namespace Ryujinx.HLE.HOS.Services.Ns
 {
     [Service("ns:am2")]
@@ -24,6 +26,21 @@ namespace Ryujinx.HLE.HOS.Services.Ns
         {
             MakeObject(context, new IReadOnlyApplicationControlDataInterface(context));
 
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(7997)]
+        public ResultCode GetDownloadTaskInterface(ServiceCtx context)
+        {
+            MakeObject(context, new IDownloadTaskInterface(context));
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(7998)]
+        public ResultCode GetContentManagementInterface(ServiceCtx context)
+        {
+            MakeObject(context, new IContentManagementInterface(context));
+            Logger.Stub?.PrintStub(LogClass.ServiceNs);
             return ResultCode.Success;
         }
     }

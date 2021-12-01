@@ -1,13 +1,22 @@
 ﻿using Ryujinx.Common.Logging;
+using Ryujinx.HLE.HOS.Kernel.Threading;
 using Ryujinx.HLE.HOS.Services.Hid.HidServer;
 using Ryujinx.HLE.HOS.Services.Hid.Types;
+using System;
+using Ryujinx.HLE.HOS.Ipc;
+using Ryujinx.HLE.HOS.Kernel.Common;
 
 namespace Ryujinx.HLE.HOS.Services.Hid
 {
     [Service("hid:sys")]
     class IHidSystemServer : IpcService
     {
-        public IHidSystemServer(ServiceCtx context) { }
+        int _joyDetachOnBluetoothOffEventHandle;
+        KEvent _joyDetachOnBluetoothOffEvent;
+
+        public IHidSystemServer(ServiceCtx context) {
+            _joyDetachOnBluetoothOffEvent = new KEvent(context.Device.System.KernelContext);
+        }
 
         [CommandHipc(303)]
         // ApplyNpadSystemCommonPolicy(u64)
@@ -70,6 +79,37 @@ namespace Ryujinx.HLE.HOS.Services.Hid
 
             appletFooterUiType = context.Device.Hid.SharedMemory.Npads[(int)playerIndex].InternalState.AppletFooterUiType;
 
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(751)]
+        public ResultCode AcquireJoyDetachOnBluetoothOffEventHandle(ServiceCtx context)
+        {
+            if (_joyDetachOnBluetoothOffEventHandle == 0)
+            {
+                if (context.Process.HandleTable.GenerateHandle(_joyDetachOnBluetoothOffEvent.ReadableEvent, out _joyDetachOnBluetoothOffEventHandle) != KernelResult.Success)
+                {
+                    throw new InvalidOperationException("Out of handles!");
+                }
+            }
+
+            context.Response.HandleDesc = IpcHandleDesc.MakeCopy(_joyDetachOnBluetoothOffEventHandle);
+            Logger.Stub?.PrintStub(LogClass.ServiceHid);
+
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(850)]
+        public ResultCode IsUsbFullKeyControllerEnabled(ServiceCtx context)
+        {
+            context.ResponseData.Write(true);
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(1153)]
+        public ResultCode GetTouchScreenDefaultConfiguration(ServiceCtx context)
+        {
+            Logger.Stub?.PrintStub(LogClass.ServiceHid);
             return ResultCode.Success;
         }
     }

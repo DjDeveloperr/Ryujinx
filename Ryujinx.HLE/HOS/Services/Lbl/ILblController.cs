@@ -1,4 +1,6 @@
-﻿namespace Ryujinx.HLE.HOS.Services.Lbl
+﻿using Ryujinx.Common.Logging;
+
+namespace Ryujinx.HLE.HOS.Services.Lbl
 {
     abstract class ILblController : IpcService
     {
@@ -9,6 +11,20 @@
         internal abstract void EnableVrMode();
         internal abstract void DisableVrMode();
         protected abstract bool IsVrModeEnabled();
+
+        [CommandHipc(0)]
+        public ResultCode SaveCurrentSetting(ServiceCtx context)
+        {
+            Logger.Stub?.PrintStub(LogClass.Service);
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(1)]
+        public ResultCode LoadCurrentSetting(ServiceCtx context)
+        {
+            Logger.Stub?.PrintStub(LogClass.Service);
+            return ResultCode.Success;
+        }
 
         [CommandHipc(17)]
         // SetBrightnessReflectionDelayLevel(float, float)

@@ -56,7 +56,6 @@ namespace Ryujinx.HLE.HOS
         public void InitializeFsServer(VirtualFileSystem virtualFileSystem)
         {
             virtualFileSystem.InitializeFsServer(Server, out var fsClient);
-
             FsClient = fsClient;
 
             CleanSdCardDirectory();

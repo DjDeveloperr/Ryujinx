@@ -1249,6 +1249,13 @@ namespace Ryujinx.Ui
             LoadApplication(contentPath);
         }
 
+        private void Load_QLaunch_Applet(object sender, EventArgs args)
+        {
+            string contentPath = _contentManager.GetInstalledContentPath(0x0100000000001000, StorageId.NandSystem, NcaContentType.Program);
+
+            LoadApplication(contentPath);
+        }
+
         private void Open_Ryu_Folder(object sender, EventArgs args)
         {
             OpenHelper.OpenFolder(AppDataManager.BaseDirPath);

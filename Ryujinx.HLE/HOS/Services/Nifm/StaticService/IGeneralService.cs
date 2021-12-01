@@ -123,6 +123,14 @@ namespace Ryujinx.HLE.HOS.Services.Nifm.StaticService
             return ResultCode.Success;
         }
 
+        [CommandHipc(17)]
+        public ResultCode IsWirelessCommunicationEnabled(ServiceCtx context)
+        {
+            context.ResponseData.Write(false);
+            Logger.Stub?.PrintStub(LogClass.ServiceNifm);
+            return ResultCode.Success;
+        }
+
         [CommandHipc(18)]
         // GetInternetConnectionStatus() -> nn::nifm::detail::sf::InternetConnectionStatus
         public ResultCode GetInternetConnectionStatus(ServiceCtx context)

@@ -65,6 +65,16 @@
                                 <signal name="activate" handler="Load_Mii_Edit_Applet" swapped="no"/>
                               </object>
                             </child>
+                            <child>
+                              <object class="GtkMenuItem" id="LoadQLaunchApplet">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="tooltip_text" translatable="yes">Open Switch Home Menu in Standalone mode</property>
+                                <property name="label" translatable="yes">QLaunch</property>
+                                <property name="use_underline">True</property>
+                                <signal name="activate" handler="Load_QLaunch_Applet" swapped="no"/>
+                              </object>
+                            </child>
                           </object>
                         </child>
                       </object>

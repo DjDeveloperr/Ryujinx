@@ -87,6 +87,13 @@ namespace Ryujinx.HLE.HOS.Services.Settings
             return ResultCode.Success;
         }
 
+        [CommandHipc(17)]
+        public ResultCode GetAccountSettings(ServiceCtx context)
+        {
+            Logger.Stub?.PrintStub(LogClass.ServiceSet);
+            return ResultCode.Success;
+        }
+
         [CommandHipc(23)]
         // GetColorSetId() -> i32
         public ResultCode GetColorSetId(ServiceCtx context)
@@ -104,6 +111,25 @@ namespace Ryujinx.HLE.HOS.Services.Settings
 
             context.Device.System.State.ThemeColor = (ColorSet)colorSetId;
 
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(29)]
+        public ResultCode GetNotificationSettings(ServiceCtx context)
+        {
+            context.ResponseData.Write((uint)0);
+            context.ResponseData.Write((uint)0);
+            context.ResponseData.Write((ulong)0);
+            context.ResponseData.Write((ulong)0);
+
+            Logger.Stub?.PrintStub(LogClass.ServiceSet);
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(31)]
+        public ResultCode GetAccountNotificationSettings(ServiceCtx context)
+        {
+            context.ResponseData.Write((uint)0);
             return ResultCode.Success;
         }
 
@@ -222,6 +248,21 @@ namespace Ryujinx.HLE.HOS.Services.Settings
             return ResultCode.Success;
         }
 
+        [CommandHipc(39)]
+        public ResultCode GetTvSettings(ServiceCtx context)
+        {
+            Logger.Stub?.PrintStub(LogClass.ServiceSet);
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(47)]
+        public ResultCode GetQuestFlag(ServiceCtx context)
+        {
+            context.ResponseData.Write((byte)0);
+            Logger.Stub?.PrintStub(LogClass.ServiceSet);
+            return ResultCode.Success;
+        }
+
        [CommandHipc(60)]
         // IsUserSystemClockAutomaticCorrectionEnabled() -> bool
         public ResultCode IsUserSystemClockAutomaticCorrectionEnabled(ServiceCtx context)
@@ -231,6 +272,41 @@ namespace Ryujinx.HLE.HOS.Services.Settings
 
             Logger.Stub?.PrintStub(LogClass.ServiceSet);
 
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(63)]
+        public ResultCode GetPrimaryAlbumStorage(ServiceCtx context)
+        {
+            context.ResponseData.Write((int)0);
+            Logger.Stub?.PrintStub(LogClass.ServiceSet);
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(71)]
+        public ResultCode GetSleepSettings(ServiceCtx context)
+        {
+            context.ResponseData.Write((uint)0);
+            context.ResponseData.Write((uint)0);
+            context.ResponseData.Write((uint)0);
+            Logger.Stub?.PrintStub(LogClass.ServiceSet);
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(75)]
+        public ResultCode GetInitialLaunchSettings(ServiceCtx context)
+        {
+            context.ResponseData.Write((uint)0);
+            
+            context.ResponseData.Write((uint)0);
+
+            context.ResponseData.Write((uint)0);
+            context.ResponseData.Write((uint)0);
+            context.ResponseData.Write((uint)0);
+            context.ResponseData.Write((uint)0);
+            context.ResponseData.Write((ushort)0);
+
+            Logger.Stub?.PrintStub(LogClass.ServiceSet);
             return ResultCode.Success;
         }
 
@@ -272,6 +348,13 @@ namespace Ryujinx.HLE.HOS.Services.Settings
             return ResultCode.Success;
         }
 
+        [CommandHipc(79)]
+        public ResultCode GetProductModel(ServiceCtx context)
+        {
+            context.ResponseData.Write((uint)0);
+            return ResultCode.Success;
+        }
+
         [CommandHipc(90)]
         // GetMiiAuthorId() -> nn::util::Uuid
         public ResultCode GetMiiAuthorId(ServiceCtx context)
@@ -283,6 +366,38 @@ namespace Ryujinx.HLE.HOS.Services.Settings
 
             miiAuthorId.Write(context.ResponseData);
 
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(95)]
+        public ResultCode GetAutoUpdateEnableFlag(ServiceCtx context)
+        {
+            context.ResponseData.Write((uint)0);
+            Logger.Stub?.PrintStub(LogClass.ServiceSet);
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(99)]
+        public ResultCode GetBatteryPercentageFlag(ServiceCtx context)
+        {
+            context.ResponseData.Write((uint)0);
+            Logger.Stub?.PrintStub(LogClass.ServiceSet);
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(124)]
+        public ResultCode GetErrorReportSharePermission(ServiceCtx context)
+        {
+            context.ResponseData.Write((int)1);
+            Logger.Stub?.PrintStub(LogClass.ServiceSet);
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(126)]
+        public ResultCode GetAppletLaunchFlags(ServiceCtx context)
+        {
+            context.ResponseData.Write((uint)0);
+            Logger.Stub?.PrintStub(LogClass.ServiceSet);
             return ResultCode.Success;
         }
 
@@ -332,6 +447,22 @@ namespace Ryujinx.HLE.HOS.Services.Settings
 
                 return data;
             }
+        }
+
+        [CommandHipc(136)]
+        public ResultCode GetKeyboardLayout(ServiceCtx context)
+        {
+            context.ResponseData.Write((uint)1); // en us
+            Logger.Stub?.PrintStub(LogClass.ServiceSet);
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(170)]
+        public ResultCode GetChineseTraditionalInputMethod(ServiceCtx context)
+        {
+            context.ResponseData.Write((uint)1);
+            Logger.Stub?.PrintStub(LogClass.ServiceSet);
+            return ResultCode.Success;
         }
     }
 }

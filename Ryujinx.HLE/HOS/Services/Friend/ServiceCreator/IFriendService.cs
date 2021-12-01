@@ -310,5 +310,12 @@ namespace Ryujinx.HLE.HOS.Services.Friend.ServiceCreator
 
             return ResultCode.Success;
         }
+
+        [CommandHipc(20701)]
+        public ResultCode GetPlayHistoryStatistics(ServiceCtx context)
+        {
+            Logger.Stub?.PrintStub(LogClass.ServiceFriend);
+            return ResultCode.Success;
+        }
     }
 }
