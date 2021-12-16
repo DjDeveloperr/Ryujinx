@@ -81,7 +81,7 @@ namespace ARMeilleure.Instructions
     {
         public static float FPConvert(ushort valueBits)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
 
             double real = valueBits.FPUnpackCv(out FPType type, out bool sign, context);
 
@@ -143,7 +143,7 @@ namespace ARMeilleure.Instructions
             this ushort valueBits,
             out FPType type,
             out bool sign,
-            ExecutionContext context)
+            DefaultExecutionContext context)
         {
             sign = (~(uint)valueBits & 0x8000u) == 0u;
 
@@ -187,7 +187,7 @@ namespace ARMeilleure.Instructions
             return sign ? -real : real;
         }
 
-        private static float FPRoundCv(double real, ExecutionContext context)
+        private static float FPRoundCv(double real, DefaultExecutionContext context)
         {
             const int minimumExp = -126;
 
@@ -317,7 +317,7 @@ namespace ARMeilleure.Instructions
                 (int)(((uint)valueBits & 0x8000u) << 16 | 0x7FC00000u | ((uint)valueBits & 0x01FFu) << 13));
         }
 
-        private static void FPProcessException(FPException exc, ExecutionContext context)
+        private static void FPProcessException(FPException exc, DefaultExecutionContext context)
         {
             int enable = (int)exc + 8;
 
@@ -336,7 +336,7 @@ namespace ARMeilleure.Instructions
     {
         public static ushort FPConvert(float value)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
 
             double real = value.FPUnpackCv(out FPType type, out bool sign, out uint valueBits, context);
 
@@ -414,7 +414,7 @@ namespace ARMeilleure.Instructions
             out FPType type,
             out bool sign,
             out uint valueBits,
-            ExecutionContext context)
+            DefaultExecutionContext context)
         {
             valueBits = (uint)BitConverter.SingleToInt32Bits(value);
 
@@ -465,7 +465,7 @@ namespace ARMeilleure.Instructions
             return sign ? -real : real;
         }
 
-        private static ushort FPRoundCv(double real, ExecutionContext context)
+        private static ushort FPRoundCv(double real, DefaultExecutionContext context)
         {
             const int minimumExp = -14;
 
@@ -604,7 +604,7 @@ namespace ARMeilleure.Instructions
             return (ushort)((valueBits & 0x80000000u) >> 16 | 0x7E00u | (valueBits & 0x003FE000u) >> 13);
         }
 
-        private static void FPProcessException(FPException exc, ExecutionContext context)
+        private static void FPProcessException(FPException exc, DefaultExecutionContext context)
         {
             int enable = (int)exc + 8;
 
@@ -628,7 +628,7 @@ namespace ARMeilleure.Instructions
 
         public static float FPAddFpscr(float value1, float value2, bool standardFpscr)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
             FPCR fpcr = standardFpscr ? context.StandardFpcrValue : context.Fpcr;
 
             value1 = value1.FPUnpack(out FPType type1, out bool sign1, out uint op1, context, fpcr);
@@ -677,7 +677,7 @@ namespace ARMeilleure.Instructions
 
         public static int FPCompare(float value1, float value2, bool signalNaNs)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
             FPCR fpcr = context.Fpcr;
 
             value1 = value1.FPUnpack(out FPType type1, out bool sign1, out _, context, fpcr);
@@ -720,7 +720,7 @@ namespace ARMeilleure.Instructions
 
         public static float FPCompareEQFpscr(float value1, float value2, bool standardFpscr)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
             FPCR fpcr = standardFpscr ? context.StandardFpcrValue : context.Fpcr;
 
             value1 = value1.FPUnpack(out FPType type1, out _, out _, context, fpcr);
@@ -752,7 +752,7 @@ namespace ARMeilleure.Instructions
 
         public static float FPCompareGEFpscr(float value1, float value2, bool standardFpscr)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
             FPCR fpcr = standardFpscr ? context.StandardFpcrValue : context.Fpcr;
 
             value1 = value1.FPUnpack(out FPType type1, out _, out _, context, fpcr);
@@ -781,7 +781,7 @@ namespace ARMeilleure.Instructions
 
         public static float FPCompareGTFpscr(float value1, float value2, bool standardFpscr)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
             FPCR fpcr = standardFpscr ? context.StandardFpcrValue : context.Fpcr;
 
             value1 = value1.FPUnpack(out FPType type1, out _, out _, context, fpcr);
@@ -825,7 +825,7 @@ namespace ARMeilleure.Instructions
 
         public static float FPDiv(float value1, float value2)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
             FPCR fpcr = context.Fpcr;
 
             value1 = value1.FPUnpack(out FPType type1, out bool sign1, out uint op1, context, fpcr);
@@ -880,7 +880,7 @@ namespace ARMeilleure.Instructions
 
         public static float FPMaxFpscr(float value1, float value2, bool standardFpscr)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
             FPCR fpcr = standardFpscr ? context.StandardFpcrValue : context.Fpcr;
 
             value1 = value1.FPUnpack(out FPType type1, out bool sign1, out uint op1, context, fpcr);
@@ -946,7 +946,7 @@ namespace ARMeilleure.Instructions
 
         public static float FPMaxNumFpscr(float value1, float value2, bool standardFpscr)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
             FPCR fpcr = standardFpscr ? context.StandardFpcrValue : context.Fpcr;
 
             value1.FPUnpack(out FPType type1, out _, out _, context, fpcr);
@@ -971,7 +971,7 @@ namespace ARMeilleure.Instructions
 
         public static float FPMinFpscr(float value1, float value2, bool standardFpscr)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
             FPCR fpcr = standardFpscr ? context.StandardFpcrValue : context.Fpcr;
 
             value1 = value1.FPUnpack(out FPType type1, out bool sign1, out uint op1, context, fpcr);
@@ -1037,7 +1037,7 @@ namespace ARMeilleure.Instructions
 
         public static float FPMinNumFpscr(float value1, float value2, bool standardFpscr)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
             FPCR fpcr = standardFpscr ? context.StandardFpcrValue : context.Fpcr;
 
             value1.FPUnpack(out FPType type1, out _, out _, context, fpcr);
@@ -1062,7 +1062,7 @@ namespace ARMeilleure.Instructions
 
         public static float FPMulFpscr(float value1, float value2, bool standardFpscr)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
             FPCR fpcr = standardFpscr ? context.StandardFpcrValue : context.Fpcr;
 
             value1 = value1.FPUnpack(out FPType type1, out bool sign1, out uint op1, context, fpcr);
@@ -1112,7 +1112,7 @@ namespace ARMeilleure.Instructions
 
         public static float FPMulAddFpscr(float valueA, float value1, float value2, bool standardFpscr)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
             FPCR fpcr = standardFpscr ? context.StandardFpcrValue : context.Fpcr;
 
             valueA = valueA.FPUnpack(out FPType typeA, out bool signA, out uint addend, context, fpcr);
@@ -1189,7 +1189,7 @@ namespace ARMeilleure.Instructions
 
         public static float FPMulX(float value1, float value2)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
             FPCR fpcr = context.Fpcr;
 
             value1 = value1.FPUnpack(out FPType type1, out bool sign1, out uint op1, context, fpcr);
@@ -1252,7 +1252,7 @@ namespace ARMeilleure.Instructions
 
         public static float FPRecipEstimateFpscr(float value, bool standardFpscr)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
             FPCR fpcr = standardFpscr ? context.StandardFpcrValue : context.Fpcr;
 
             value.FPUnpack(out FPType type, out bool sign, out uint op, context, fpcr);
@@ -1342,7 +1342,7 @@ namespace ARMeilleure.Instructions
 
         public static float FPRecipStep(float value1, float value2)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
             FPCR fpcr = context.StandardFpcrValue;
 
             value1 = value1.FPUnpack(out FPType type1, out bool sign1, out uint op1, context, fpcr);
@@ -1374,7 +1374,7 @@ namespace ARMeilleure.Instructions
 
         public static float FPRecipStepFused(float value1, float value2)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
             FPCR fpcr = context.Fpcr;
 
             value1 = value1.FPNeg();
@@ -1415,7 +1415,7 @@ namespace ARMeilleure.Instructions
 
         public static float FPRecpX(float value)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
             FPCR fpcr = context.Fpcr;
 
             value.FPUnpack(out FPType type, out bool sign, out uint op, context, fpcr);
@@ -1445,7 +1445,7 @@ namespace ARMeilleure.Instructions
 
         public static float FPRSqrtEstimateFpscr(float value, bool standardFpscr)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
             FPCR fpcr = standardFpscr ? context.StandardFpcrValue : context.Fpcr;
 
             value.FPUnpack(out FPType type, out bool sign, out uint op, context, fpcr);
@@ -1509,7 +1509,7 @@ namespace ARMeilleure.Instructions
             return result;
         }
 
-        public static float FPHalvedSub(float value1, float value2, ExecutionContext context, FPCR fpcr)
+        public static float FPHalvedSub(float value1, float value2, DefaultExecutionContext context, FPCR fpcr)
         {
             value1 = value1.FPUnpack(out FPType type1, out bool sign1, out uint op1, context, fpcr);
             value2 = value2.FPUnpack(out FPType type2, out bool sign2, out uint op2, context, fpcr);
@@ -1557,7 +1557,7 @@ namespace ARMeilleure.Instructions
 
         public static float FPRSqrtStep(float value1, float value2)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
             FPCR fpcr = context.StandardFpcrValue;
 
             value1 = value1.FPUnpack(out FPType type1, out bool sign1, out uint op1, context, fpcr);
@@ -1589,7 +1589,7 @@ namespace ARMeilleure.Instructions
 
         public static float FPRSqrtStepFused(float value1, float value2)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
             FPCR fpcr = context.Fpcr;
 
             value1 = value1.FPNeg();
@@ -1630,7 +1630,7 @@ namespace ARMeilleure.Instructions
 
         public static float FPSqrt(float value)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
             FPCR fpcr = context.Fpcr;
 
             value = value.FPUnpack(out FPType type, out bool sign, out uint op, context, fpcr);
@@ -1677,7 +1677,7 @@ namespace ARMeilleure.Instructions
 
         public static float FPSubFpscr(float value1, float value2, bool standardFpscr)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
             FPCR fpcr = standardFpscr ? context.StandardFpcrValue : context.Fpcr;
 
             value1 = value1.FPUnpack(out FPType type1, out bool sign1, out uint op1, context, fpcr);
@@ -1774,7 +1774,7 @@ namespace ARMeilleure.Instructions
             out FPType type,
             out bool sign,
             out uint valueBits,
-            ExecutionContext context,
+            DefaultExecutionContext context,
             FPCR fpcr)
         {
             valueBits = (uint)BitConverter.SingleToInt32Bits(value);
@@ -1824,7 +1824,7 @@ namespace ARMeilleure.Instructions
             uint op1,
             uint op2,
             out bool done,
-            ExecutionContext context,
+            DefaultExecutionContext context,
             FPCR fpcr)
         {
             done = true;
@@ -1859,7 +1859,7 @@ namespace ARMeilleure.Instructions
             uint op2,
             uint op3,
             out bool done,
-            ExecutionContext context,
+            DefaultExecutionContext context,
             FPCR fpcr)
         {
             done = true;
@@ -1894,7 +1894,7 @@ namespace ARMeilleure.Instructions
             return FPZero(false);
         }
 
-        private static float FPProcessNaN(FPType type, uint op, ExecutionContext context, FPCR fpcr)
+        private static float FPProcessNaN(FPType type, uint op, DefaultExecutionContext context, FPCR fpcr)
         {
             if (type == FPType.SNaN)
             {
@@ -1911,7 +1911,7 @@ namespace ARMeilleure.Instructions
             return BitConverter.Int32BitsToSingle((int)op);
         }
 
-        private static void FPProcessException(FPException exc, ExecutionContext context, FPCR fpcr)
+        private static void FPProcessException(FPException exc, DefaultExecutionContext context, FPCR fpcr)
         {
             int enable = (int)exc + 8;
 
@@ -1935,7 +1935,7 @@ namespace ARMeilleure.Instructions
 
         public static double FPAddFpscr(double value1, double value2, bool standardFpscr)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
             FPCR fpcr = standardFpscr ? context.StandardFpcrValue : context.Fpcr;
 
             value1 = value1.FPUnpack(out FPType type1, out bool sign1, out ulong op1, context, fpcr);
@@ -1984,7 +1984,7 @@ namespace ARMeilleure.Instructions
 
         public static int FPCompare(double value1, double value2, bool signalNaNs)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
             FPCR fpcr = context.Fpcr;
 
             value1 = value1.FPUnpack(out FPType type1, out bool sign1, out _, context, fpcr);
@@ -2027,7 +2027,7 @@ namespace ARMeilleure.Instructions
 
         public static double FPCompareEQFpscr(double value1, double value2, bool standardFpscr)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
             FPCR fpcr = standardFpscr ? context.StandardFpcrValue : context.Fpcr;
 
             value1 = value1.FPUnpack(out FPType type1, out _, out _, context, fpcr);
@@ -2059,7 +2059,7 @@ namespace ARMeilleure.Instructions
 
         public static double FPCompareGEFpscr(double value1, double value2, bool standardFpscr)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
             FPCR fpcr = standardFpscr ? context.StandardFpcrValue : context.Fpcr;
 
             value1 = value1.FPUnpack(out FPType type1, out _, out _, context, fpcr);
@@ -2088,7 +2088,7 @@ namespace ARMeilleure.Instructions
 
         public static double FPCompareGTFpscr(double value1, double value2, bool standardFpscr)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
             FPCR fpcr = standardFpscr ? context.StandardFpcrValue : context.Fpcr;
 
             value1 = value1.FPUnpack(out FPType type1, out _, out _, context, fpcr);
@@ -2132,7 +2132,7 @@ namespace ARMeilleure.Instructions
 
         public static double FPDiv(double value1, double value2)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
             FPCR fpcr = context.Fpcr;
 
             value1 = value1.FPUnpack(out FPType type1, out bool sign1, out ulong op1, context, fpcr);
@@ -2187,7 +2187,7 @@ namespace ARMeilleure.Instructions
 
         public static double FPMaxFpscr(double value1, double value2, bool standardFpscr)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
             FPCR fpcr = standardFpscr ? context.StandardFpcrValue : context.Fpcr;
 
             value1 = value1.FPUnpack(out FPType type1, out bool sign1, out ulong op1, context, fpcr);
@@ -2253,7 +2253,7 @@ namespace ARMeilleure.Instructions
 
         public static double FPMaxNumFpscr(double value1, double value2, bool standardFpscr)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
             FPCR fpcr = standardFpscr ? context.StandardFpcrValue : context.Fpcr;
 
             value1.FPUnpack(out FPType type1, out _, out _, context, fpcr);
@@ -2278,7 +2278,7 @@ namespace ARMeilleure.Instructions
 
         public static double FPMinFpscr(double value1, double value2, bool standardFpscr)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
             FPCR fpcr = standardFpscr ? context.StandardFpcrValue : context.Fpcr;
 
             value1 = value1.FPUnpack(out FPType type1, out bool sign1, out ulong op1, context, fpcr);
@@ -2344,7 +2344,7 @@ namespace ARMeilleure.Instructions
 
         public static double FPMinNumFpscr(double value1, double value2, bool standardFpscr)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
             FPCR fpcr = standardFpscr ? context.StandardFpcrValue : context.Fpcr;
 
             value1.FPUnpack(out FPType type1, out _, out _, context, fpcr);
@@ -2369,7 +2369,7 @@ namespace ARMeilleure.Instructions
 
         public static double FPMulFpscr(double value1, double value2, bool standardFpscr)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
             FPCR fpcr = standardFpscr ? context.StandardFpcrValue : context.Fpcr;
 
             value1 = value1.FPUnpack(out FPType type1, out bool sign1, out ulong op1, context, fpcr);
@@ -2419,7 +2419,7 @@ namespace ARMeilleure.Instructions
 
         public static double FPMulAddFpscr(double valueA, double value1, double value2, bool standardFpscr)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
             FPCR fpcr = standardFpscr ? context.StandardFpcrValue : context.Fpcr;
 
             valueA = valueA.FPUnpack(out FPType typeA, out bool signA, out ulong addend, context, fpcr);
@@ -2496,7 +2496,7 @@ namespace ARMeilleure.Instructions
 
         public static double FPMulX(double value1, double value2)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
             FPCR fpcr = context.Fpcr;
 
             value1 = value1.FPUnpack(out FPType type1, out bool sign1, out ulong op1, context, fpcr);
@@ -2559,7 +2559,7 @@ namespace ARMeilleure.Instructions
 
         public static double FPRecipEstimateFpscr(double value, bool standardFpscr)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
             FPCR fpcr = standardFpscr ? context.StandardFpcrValue : context.Fpcr;
 
             value.FPUnpack(out FPType type, out bool sign, out ulong op, context, fpcr);
@@ -2649,7 +2649,7 @@ namespace ARMeilleure.Instructions
 
         public static double FPRecipStep(double value1, double value2)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
             FPCR fpcr = context.StandardFpcrValue;
 
             value1 = value1.FPUnpack(out FPType type1, out bool sign1, out ulong op1, context, fpcr);
@@ -2681,7 +2681,7 @@ namespace ARMeilleure.Instructions
 
         public static double FPRecipStepFused(double value1, double value2)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
             FPCR fpcr = context.Fpcr;
 
             value1 = value1.FPNeg();
@@ -2722,7 +2722,7 @@ namespace ARMeilleure.Instructions
 
         public static double FPRecpX(double value)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
             FPCR fpcr = context.Fpcr;
 
             value.FPUnpack(out FPType type, out bool sign, out ulong op, context, fpcr);
@@ -2752,7 +2752,7 @@ namespace ARMeilleure.Instructions
 
         public static double FPRSqrtEstimateFpscr(double value, bool standardFpscr)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
             FPCR fpcr = standardFpscr ? context.StandardFpcrValue : context.Fpcr;
 
             value.FPUnpack(out FPType type, out bool sign, out ulong op, context, fpcr);
@@ -2816,7 +2816,7 @@ namespace ARMeilleure.Instructions
             return result;
         }
 
-        public static double FPHalvedSub(double value1, double value2, ExecutionContext context, FPCR fpcr)
+        public static double FPHalvedSub(double value1, double value2, DefaultExecutionContext context, FPCR fpcr)
         {
             value1 = value1.FPUnpack(out FPType type1, out bool sign1, out ulong op1, context, fpcr);
             value2 = value2.FPUnpack(out FPType type2, out bool sign2, out ulong op2, context, fpcr);
@@ -2864,7 +2864,7 @@ namespace ARMeilleure.Instructions
 
         public static double FPRSqrtStep(double value1, double value2)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
             FPCR fpcr = context.StandardFpcrValue;
 
             value1 = value1.FPUnpack(out FPType type1, out bool sign1, out ulong op1, context, fpcr);
@@ -2896,7 +2896,7 @@ namespace ARMeilleure.Instructions
 
         public static double FPRSqrtStepFused(double value1, double value2)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
             FPCR fpcr = context.Fpcr;
 
             value1 = value1.FPNeg();
@@ -2937,7 +2937,7 @@ namespace ARMeilleure.Instructions
 
         public static double FPSqrt(double value)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
             FPCR fpcr = context.Fpcr;
 
             value = value.FPUnpack(out FPType type, out bool sign, out ulong op, context, fpcr);
@@ -2984,7 +2984,7 @@ namespace ARMeilleure.Instructions
 
         public static double FPSubFpscr(double value1, double value2, bool standardFpscr)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
             FPCR fpcr = standardFpscr ? context.StandardFpcrValue : context.Fpcr;
 
             value1 = value1.FPUnpack(out FPType type1, out bool sign1, out ulong op1, context, fpcr);
@@ -3081,7 +3081,7 @@ namespace ARMeilleure.Instructions
             out FPType type,
             out bool sign,
             out ulong valueBits,
-            ExecutionContext context,
+            DefaultExecutionContext context,
             FPCR fpcr)
         {
             valueBits = (ulong)BitConverter.DoubleToInt64Bits(value);
@@ -3131,7 +3131,7 @@ namespace ARMeilleure.Instructions
             ulong op1,
             ulong op2,
             out bool done,
-            ExecutionContext context,
+            DefaultExecutionContext context,
             FPCR fpcr)
         {
             done = true;
@@ -3166,7 +3166,7 @@ namespace ARMeilleure.Instructions
             ulong op2,
             ulong op3,
             out bool done,
-            ExecutionContext context,
+            DefaultExecutionContext context,
             FPCR fpcr)
         {
             done = true;
@@ -3201,7 +3201,7 @@ namespace ARMeilleure.Instructions
             return FPZero(false);
         }
 
-        private static double FPProcessNaN(FPType type, ulong op, ExecutionContext context, FPCR fpcr)
+        private static double FPProcessNaN(FPType type, ulong op, DefaultExecutionContext context, FPCR fpcr)
         {
             if (type == FPType.SNaN)
             {
@@ -3218,7 +3218,7 @@ namespace ARMeilleure.Instructions
             return BitConverter.Int64BitsToDouble((long)op);
         }
 
-        private static void FPProcessException(FPException exc, ExecutionContext context, FPCR fpcr)
+        private static void FPProcessException(FPException exc, DefaultExecutionContext context, FPCR fpcr)
         {
             int enable = (int)exc + 8;
 

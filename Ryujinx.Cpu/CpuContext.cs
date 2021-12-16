@@ -21,12 +21,12 @@ namespace Ryujinx.Cpu
 
         public static ExecutionContext CreateExecutionContext()
         {
-            return new ExecutionContext(new JitMemoryAllocator());
+            return new ExecutionContext(new DefaultExecutionContext(new JitMemoryAllocator()));
         }
 
         public void Execute(ExecutionContext context, ulong address)
         {
-            _translator.Execute(context, address);
+            _translator.Execute(context.DefaultContext, address);
         }
     }
 }

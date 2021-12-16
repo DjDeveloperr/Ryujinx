@@ -11,11 +11,11 @@ namespace ARMeilleure.Instructions
     {
         private class ThreadContext
         {
-            public ExecutionContext Context { get; }
+            public DefaultExecutionContext Context { get; }
             public IMemoryManager Memory { get; }
             public Translator Translator { get; }
 
-            public ThreadContext(ExecutionContext context, IMemoryManager memory, Translator translator)
+            public ThreadContext(DefaultExecutionContext context, IMemoryManager memory, Translator translator)
             {
                 Context = context;
                 Memory = memory;
@@ -26,7 +26,7 @@ namespace ARMeilleure.Instructions
         [ThreadStatic]
         private static ThreadContext Context;
 
-        public static void RegisterThread(ExecutionContext context, IMemoryManager memory, Translator translator)
+        public static void RegisterThread(DefaultExecutionContext context, IMemoryManager memory, Translator translator)
         {
             Context = new ThreadContext(context, memory, translator);
         }
@@ -91,7 +91,7 @@ namespace ARMeilleure.Instructions
 
         public static uint GetFpscr()
         {
-            ExecutionContext context = GetContext();
+            var context = GetContext();
 
             return (uint)(context.Fpsr & FPSR.A32Mask & ~FPSR.Nzcv) |
                    (uint)(context.Fpcr & FPCR.A32Mask);
@@ -149,7 +149,7 @@ namespace ARMeilleure.Instructions
 
         public static void SetFpscr(uint fpscr)
         {
-            ExecutionContext context = GetContext();
+            var context = GetContext();
 
             context.Fpsr = FPSR.A32Mask & (FPSR)fpscr;
             context.Fpcr = FPCR.A32Mask & (FPCR)fpscr;
@@ -246,7 +246,7 @@ namespace ARMeilleure.Instructions
         {
             Statistics.PauseTimer();
 
-            ExecutionContext context = GetContext();
+            DefaultExecutionContext context = GetContext();
 
             context.CheckInterrupt();
 
@@ -255,7 +255,7 @@ namespace ARMeilleure.Instructions
             return context.Running;
         }
 
-        public static ExecutionContext GetContext()
+        public static DefaultExecutionContext GetContext()
         {
             return Context.Context;
         }

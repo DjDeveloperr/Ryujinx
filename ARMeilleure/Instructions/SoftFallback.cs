@@ -58,7 +58,7 @@ namespace ARMeilleure.Instructions
 
         public static long SignedShlRegSatQ(long value, long shift, bool round, int size)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
 
             int eSize = 8 << size;
 
@@ -102,7 +102,7 @@ namespace ARMeilleure.Instructions
 
         public static ulong UnsignedShlRegSatQ(ulong value, ulong shift, bool round, int size)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
 
             int eSize = 8 << size;
 
@@ -246,7 +246,7 @@ namespace ARMeilleure.Instructions
             }
         }
 
-        private static long SignedSignSatQ(long op, int eSize, ExecutionContext context) // eSize := {8, 16, 32, 64}.
+        private static long SignedSignSatQ(long op, int eSize, DefaultExecutionContext context) // eSize := {8, 16, 32, 64}.
         {
             long tMaxValue =  (1L << (eSize - 1)) - 1L;
             long tMinValue = -(1L << (eSize - 1));
@@ -269,7 +269,7 @@ namespace ARMeilleure.Instructions
             }
         }
 
-        private static ulong UnsignedSignSatQ(ulong op, int eSize, ExecutionContext context) // eSize := {8, 16, 32, 64}.
+        private static ulong UnsignedSignSatQ(ulong op, int eSize, DefaultExecutionContext context) // eSize := {8, 16, 32, 64}.
         {
             ulong tMaxValue = ulong.MaxValue >> (64 - eSize);
 
@@ -375,7 +375,7 @@ namespace ARMeilleure.Instructions
 #region "Rounding"
         public static double Round(double value)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
 
             FPRoundingMode roundMode = context.Fpcr.GetRoundingMode();
 
@@ -399,7 +399,7 @@ namespace ARMeilleure.Instructions
 
         public static float RoundF(float value)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
 
             FPRoundingMode roundMode = context.Fpcr.GetRoundingMode();
 
@@ -511,7 +511,7 @@ namespace ARMeilleure.Instructions
 #region "Saturating"
         public static long SignedSrcSignedDstSatQ(long op, int size)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
 
             int eSize = 8 << size;
 
@@ -538,7 +538,7 @@ namespace ARMeilleure.Instructions
 
         public static ulong SignedSrcUnsignedDstSatQ(long op, int size)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
 
             int eSize = 8 << size;
 
@@ -565,7 +565,7 @@ namespace ARMeilleure.Instructions
 
         public static long UnsignedSrcSignedDstSatQ(ulong op, int size)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
 
             int eSize = 8 << size;
 
@@ -585,7 +585,7 @@ namespace ARMeilleure.Instructions
 
         public static ulong UnsignedSrcUnsignedDstSatQ(ulong op, int size)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
 
             int eSize = 8 << size;
 
@@ -605,7 +605,7 @@ namespace ARMeilleure.Instructions
 
         public static long UnarySignedSatQAbsOrNeg(long op)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
 
             if (op == long.MinValue)
             {
@@ -621,7 +621,7 @@ namespace ARMeilleure.Instructions
 
         public static long BinarySignedSatQAdd(long op1, long op2)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
 
             long add = op1 + op2;
 
@@ -646,7 +646,7 @@ namespace ARMeilleure.Instructions
 
         public static ulong BinaryUnsignedSatQAdd(ulong op1, ulong op2)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
 
             ulong add = op1 + op2;
 
@@ -664,7 +664,7 @@ namespace ARMeilleure.Instructions
 
         public static long BinarySignedSatQSub(long op1, long op2)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
 
             long sub = op1 - op2;
 
@@ -689,7 +689,7 @@ namespace ARMeilleure.Instructions
 
         public static ulong BinaryUnsignedSatQSub(ulong op1, ulong op2)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
 
             ulong sub = op1 - op2;
 
@@ -707,7 +707,7 @@ namespace ARMeilleure.Instructions
 
         public static long BinarySignedSatQAcc(ulong op1, long op2)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
 
             if (op1 <= (ulong)long.MaxValue)
             {
@@ -758,7 +758,7 @@ namespace ARMeilleure.Instructions
 
         public static ulong BinaryUnsignedSatQAcc(long op1, ulong op2)
         {
-            ExecutionContext context = NativeInterface.GetContext();
+            var context = NativeInterface.GetContext();
 
             if (op1 >= 0L)
             {

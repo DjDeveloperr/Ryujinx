@@ -124,7 +124,7 @@ namespace ARMeilleure.Translation
             _backgroundTranslatorEvent.Set();
         }
 
-        public void Execute(State.ExecutionContext context, ulong address)
+        public void Execute(State.DefaultExecutionContext context, ulong address)
         {
             if (Interlocked.Increment(ref _threadCount) == 1)
             {
@@ -196,7 +196,7 @@ namespace ARMeilleure.Translation
             }
         }
 
-        public ulong ExecuteSingle(State.ExecutionContext context, ulong address)
+        public ulong ExecuteSingle(State.DefaultExecutionContext context, ulong address)
         {
             TranslatedFunction func = GetOrTranslate(address, context.ExecutionMode);
 

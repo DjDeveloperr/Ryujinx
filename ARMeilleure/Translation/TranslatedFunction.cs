@@ -22,7 +22,7 @@ namespace ARMeilleure.Translation
             FuncPtr = Marshal.GetFunctionPointerForDelegate(func);
         }
 
-        public ulong Execute(State.ExecutionContext context)
+        public ulong Execute(State.DefaultExecutionContext context)
         {
             return _func(context.NativeContextPtr);
         }
